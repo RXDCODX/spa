@@ -11,7 +11,7 @@ createRoot(document.getElementById("root")!).render(
       logger={console}
       logMessageContent
       withCredentials={false}
-      url={"http://localhost:9255/drum"}
+      url={"http://localhost:9155/drum"}
     >
       <App />
     </SignalRContext.Provider>

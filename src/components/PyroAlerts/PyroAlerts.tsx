@@ -90,7 +90,7 @@ export default function PyroAlerts() {
     (message) => {
       const parsedMessage: MediaDto = { ...message };
       parsedMessage.mediaInfo.fileInfo.localFilePath =
-        import.meta.env.VITE_BASE_PATH +
+        "https://localhost:9155/" +
         parsedMessage.mediaInfo.fileInfo.localFilePath;
       handleAddEvent(parsedMessage);
     },
