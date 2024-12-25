@@ -19,7 +19,6 @@ const PrivateRoutes = () => {
           element={<WaifuAlerts />}
         />
         <Route path="/fireshader" element={<FireShader />} />
-        <Route path="*" element={<ErrorPage typeError="404" />} />
       </Routes>
     </BrowserRouter>
   );
