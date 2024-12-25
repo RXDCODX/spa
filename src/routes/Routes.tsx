@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import PyroAlerts from "../components/PyroAlerts/PyroAlerts";
 import FireShader from "../components/shaders/FireShader/FireShader";
 import WaifuAlerts from "../components/WaifuAlerts/WaifuAlerts";
-import { ErrorPage } from "./ErrorPage";
 
 /** Приватные роуты. */
 const PrivateRoutes = () => {
