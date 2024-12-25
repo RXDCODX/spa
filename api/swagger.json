@@ -1,0 +1,1233 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Telegramus",
+    "version": "1.0"
+  },
+  "paths": {
+    "/-/{controller}/endpoints": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "parameters": [
+          {
+            "name": "controller",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/twitchtoken": {
+      "get": {
+        "tags": [
+          "Twitch"
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/hubs/AlertsHub/Alert": {
+      "post": {
+        "tags": [
+          "AlertsHub"
+        ],
+        "parameters": [
+          {
+            "name": "info",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/MediaDto"
+            }
+          }
+        ],
+        "responses": { }
+      }
+    },
+    "/hubs/AlertsHub/WaifuRoll": {
+      "post": {
+        "tags": [
+          "AlertsHub"
+        ],
+        "parameters": [
+          {
+            "name": "content",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/Waifu"
+            }
+          },
+          {
+            "name": "displayName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": { }
+      }
+    },
+    "/hubs/AlertsHub/AddNewWaifu": {
+      "post": {
+        "tags": [
+          "AlertsHub"
+        ],
+        "parameters": [
+          {
+            "name": "content",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/Waifu"
+            }
+          },
+          {
+            "name": "displayName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": { }
+      }
+    },
+    "/hubs/AlertsHub/MergeWaifu": {
+      "post": {
+        "tags": [
+          "AlertsHub"
+        ],
+        "parameters": [
+          {
+            "name": "content",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/Waifu"
+            }
+          },
+          {
+            "name": "displayName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": { }
+      }
+    },
+    "/hubs/ChatMessageHub/NewMessage": {
+      "post": {
+        "tags": [
+          "ChatMessageHub"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "message",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ChatMessage"
+            }
+          }
+        ],
+        "responses": { }
+      }
+    },
+    "/hubs/ChatMessageHub/DeleteMessage": {
+      "post": {
+        "tags": [
+          "ChatMessageHub"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": { }
+      }
+    },
+    "/hubs/ChatMessageHub/Init": {
+      "post": {
+        "tags": [
+          "ChatMessageHub"
+        ],
+        "parameters": [
+          {
+            "name": "badges",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/GetGlobalChatBadgesResponse"
+            }
+          },
+          {
+            "name": "emotes",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/GenericEmote"
+              }
+            }
+          }
+        ],
+        "responses": { }
+      }
+    },
+    "/hubs/ChatMessageHub/EmoteCatch": {
+      "post": {
+        "tags": [
+          "ChatMessageHub"
+        ],
+        "parameters": [
+          {
+            "name": "emotes",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/GenericEmote"
+              }
+            }
+          }
+        ],
+        "responses": { }
+      }
+    },
+    "/hubs/ChatMessageHub/EmoteStreak": {
+      "post": {
+        "tags": [
+          "ChatMessageHub"
+        ],
+        "parameters": [
+          {
+            "name": "emotes",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/GenericEmote"
+            }
+          },
+          {
+            "name": "streak",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": { }
+      }
+    },
+    "/hubs/ChatMessageHub/Highlite": {
+      "post": {
+        "tags": [
+          "ChatMessageHub"
+        ],
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ChatMessage"
+            }
+          },
+          {
+            "name": "color",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "faceUrl",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/Image"
+            }
+          }
+        ],
+        "responses": { }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BadgeColor": {
+        "enum": [
+          1,
+          100,
+          1000,
+          5000,
+          10000
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "BadgeEmoteSet": {
+        "type": "object",
+        "properties": {
+          "setId": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BadgeVersion"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BadgeVersion": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "imageUrl1x": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "imageUrl2x": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "imageUrl4x": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChatMessage": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TwitchLibMessage"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "badgeInfo": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/StringStringKeyValuePair"
+                },
+                "nullable": true,
+                "readOnly": true
+              },
+              "bits": {
+                "type": "integer",
+                "format": "int32",
+                "readOnly": true
+              },
+              "bitsInDollars": {
+                "type": "number",
+                "format": "double",
+                "readOnly": true
+              },
+              "channel": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true
+              },
+              "cheerBadge": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CheerBadge"
+                  }
+                ],
+                "nullable": true,
+                "readOnly": true
+              },
+              "customRewardId": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true
+              },
+              "emoteReplacedMessage": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true
+              },
+              "id": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true
+              },
+              "isBroadcaster": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "isFirstMessage": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "isHighlighted": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "isMe": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "isModerator": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "isSkippingSubMode": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "isSubscriber": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "isVip": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "isStaff": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "isPartner": {
+                "type": "boolean",
+                "readOnly": true
+              },
+              "message": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true
+              },
+              "noisy": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Noisy"
+                  }
+                ],
+                "readOnly": true
+              },
+              "roomId": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true
+              },
+              "subscribedMonthCount": {
+                "type": "integer",
+                "format": "int32",
+                "readOnly": true
+              },
+              "tmiSentTs": {
+                "type": "string",
+                "nullable": true,
+                "readOnly": true
+              },
+              "chatReply": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ChatReply"
+                  }
+                ],
+                "nullable": true,
+                "readOnly": true
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      },
+      "ChatReply": {
+        "type": "object",
+        "properties": {
+          "parentDisplayName": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "parentMsgBody": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "parentMsgId": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "parentUserId": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "parentUserLogin": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CheerBadge": {
+        "required": [
+          "cheerAmount",
+          "color"
+        ],
+        "type": "object",
+        "properties": {
+          "cheerAmount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "color": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BadgeColor"
+              }
+            ],
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Color": {
+        "required": [
+          "a",
+          "b",
+          "g",
+          "isEmpty",
+          "isKnownColor",
+          "isNamedColor",
+          "isSystemColor",
+          "name",
+          "r"
+        ],
+        "type": "object",
+        "properties": {
+          "r": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "g": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "b": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "a": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "isKnownColor": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "isEmpty": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "isNamedColor": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "isSystemColor": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Emote": {
+        "required": [
+          "endIndex",
+          "startIndex"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "startIndex": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "endIndex": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmoteSet": {
+        "type": "object",
+        "properties": {
+          "emotes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Emote"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "rawEmoteSetString": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GenericEmote": {
+        "required": [
+          "isTwitch",
+          "name",
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "isTwitch": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetGlobalChatBadgesResponse": {
+        "type": "object",
+        "properties": {
+          "emoteSet": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BadgeEmoteSet"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Image": {
+        "required": [
+          "byteSize",
+          "favorites",
+          "height",
+          "imageID",
+          "isNsfw",
+          "uploadedAt",
+          "width"
+        ],
+        "type": "object",
+        "properties": {
+          "signature": {
+            "type": "string",
+            "nullable": true
+          },
+          "extension": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "favorites": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dominantColor": {
+            "type": "string",
+            "nullable": true
+          },
+          "source": {
+            "type": "string",
+            "nullable": true
+          },
+          "artist": {
+            "nullable": true
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "likedAt": {
+            "nullable": true
+          },
+          "isNsfw": {
+            "type": "boolean"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "byteSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "previewURL": {
+            "type": "string",
+            "nullable": true
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MediaDto": {
+        "required": [
+          "mediaInfo",
+          "uploadStartTime"
+        ],
+        "type": "object",
+        "properties": {
+          "mediaInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MediaInfo"
+              }
+            ]
+          },
+          "uploadStartTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MediaFileInfo": {
+        "required": [
+          "extension",
+          "fileName",
+          "localFilePath",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MediaType"
+              }
+            ]
+          },
+          "localFilePath": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "extension": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MediaInfo": {
+        "required": [
+          "fileInfo",
+          "id",
+          "isWithGenericEmotes",
+          "metaInfo",
+          "positionInfo",
+          "stylesInfo",
+          "textInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "textInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MediaTextInfo"
+              }
+            ]
+          },
+          "fileInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MediaFileInfo"
+              }
+            ]
+          },
+          "positionInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MediaPositionInfo"
+              }
+            ]
+          },
+          "isWithGenericEmotes": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "emotes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GenericEmote"
+            },
+            "nullable": true
+          },
+          "metaInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MediaMetaInfo"
+              }
+            ]
+          },
+          "stylesInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MediaStylesInfo"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "MediaMetaInfo": {
+        "required": [
+          "displayName",
+          "duration",
+          "isLooped",
+          "twitchPointsCost",
+          "vip"
+        ],
+        "type": "object",
+        "properties": {
+          "twitchPointsCost": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "vip": {
+            "type": "boolean"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "isLooped": {
+            "type": "boolean"
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MediaPositionInfo": {
+        "required": [
+          "height",
+          "isProportion",
+          "isResizeRequires",
+          "isRotated",
+          "randomCoordinates",
+          "rotation",
+          "width",
+          "xCoordinate",
+          "yCoordinate"
+        ],
+        "type": "object",
+        "properties": {
+          "isProportion": {
+            "type": "boolean"
+          },
+          "isResizeRequires": {
+            "type": "boolean"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isRotated": {
+            "type": "boolean"
+          },
+          "rotation": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "xCoordinate": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yCoordinate": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "randomCoordinates": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MediaStylesInfo": {
+        "required": [
+          "isBorder"
+        ],
+        "type": "object",
+        "properties": {
+          "isBorder": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MediaTextInfo": {
+        "type": "object",
+        "properties": {
+          "keyWordsColor": {
+            "type": "string",
+            "nullable": true
+          },
+          "keyWord": {
+            "type": "string",
+            "nullable": true
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          },
+          "textColor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MediaType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "Noisy": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "StringStringKeyValuePair": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Tag": {
+        "required": [
+          "description",
+          "is_nsfw",
+          "name",
+          "tag_id"
+        ],
+        "type": "object",
+        "properties": {
+          "tag_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "is_nsfw": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TwitchLibMessage": {
+        "required": [
+          "color",
+          "isTurbo",
+          "userType"
+        ],
+        "type": "object",
+        "properties": {
+          "badges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StringStringKeyValuePair"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "botUsername": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "color": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Color"
+              }
+            ],
+            "readOnly": true
+          },
+          "colorHex": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "emoteSet": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EmoteSet"
+              }
+            ],
+            "nullable": true,
+            "readOnly": true
+          },
+          "isTurbo": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "userId": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "username": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "userType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserType"
+              }
+            ],
+            "readOnly": true
+          },
+          "rawIrcMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TwitchLibMessageBuilder": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TwitchLibMessage"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "UserType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "Waifu": {
+        "required": [
+          "age",
+          "isPrivated",
+          "lastOrder",
+          "orderCount",
+          "shikiId",
+          "whenAdded"
+        ],
+        "type": "object",
+        "properties": {
+          "shikiId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "age": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "anime": {
+            "type": "string",
+            "nullable": true
+          },
+          "manga": {
+            "type": "string",
+            "nullable": true
+          },
+          "whenAdded": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastOrder": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "orderCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isPrivated": {
+            "type": "boolean"
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WhisperMessage": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TwitchLibMessage"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "messageId": {
+                "type": "string",
+                "nullable": true
+              },
+              "threadId": {
+                "type": "string",
+                "nullable": true
+              },
+              "message": {
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "AlertsHub"
+    },
+    {
+      "name": "ChatMessageHub"
+    }
+  ]
+}
