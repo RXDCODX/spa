@@ -6,21 +6,15 @@ interface Props {
 }
 
 export function Voice({ mediaInfo, callback }: Props) {
-  const { id } = mediaInfo.mediaInfo;
-
   return (
-    <div id={id}>
-      <BigTextBlockForVoice
-        MediaInfo={mediaInfo.mediaInfo}
-        UploadStartTime={mediaInfo.uploadStartTime}
-      />
+    <>
+      <BigTextBlockForVoice mediaInfo={mediaInfo} />
       <audio
         controls={false}
         onEnded={() => callback()}
-        onLoadedMetadata={() => {}}
         src={mediaInfo.mediaInfo.fileInfo.localFilePath}
         autoPlay
       />
-    </div>
+    </>
   );
 }

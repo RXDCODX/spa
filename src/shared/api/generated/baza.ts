@@ -155,6 +155,7 @@ export interface MediaFileInfo {
 export interface MediaInfo {
   /** @format uuid */
   id: string;
+  index?: number;
   textInfo: MediaTextInfo;
   fileInfo: MediaFileInfo;
   positionInfo: MediaPositionInfo;

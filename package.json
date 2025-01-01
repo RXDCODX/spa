@@ -17,20 +17,24 @@
     "stylelint:noFix": "stylelint \"src/**/*.{css,scss}\" --quiet"
   },
   "dependencies": {
+    "@carefully-coded/react-text-gradient": "^1.0.6",
     "@lit/react": "^1.0.6",
     "@lottiefiles/lottie-player": "^2.0.12",
     "@microsoft/signalr": "^8.0.7",
     "@types/react-textfit": "^1.1.4",
+    "animate.css": "^4.1.1",
     "gh-pages": "^6.2.0",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.6",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.0.1",
+    "react-shaders": "^0.0.4",
     "react-signalr": "^0.2.24",
     "react-textfit": "^1.1.1",
     "react-transition-group": "^4.4.5",
     "socket.io-client": "^4.8.1",
-    "swagger-typescript-api": "^13.0.23"
+    "swagger-typescript-api": "^13.0.23",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

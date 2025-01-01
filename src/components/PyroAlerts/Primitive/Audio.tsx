@@ -14,17 +14,18 @@ export function Audio({ mediaInfo, callback }: Props) {
   const divRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div ref={divRef}>
-      <BigTextBlockForAudio
-        MediaInfo={mediaInfo.mediaInfo}
-        UploadStartTime={mediaInfo.uploadStartTime}
-      />
+    <div ref={divRef} style={{ width: "100%" }}>
+      <BigTextBlockForAudio mediaInfo={mediaInfo} />
       <audio
         id={Id}
         key={Id}
         ref={audioRef}
         controls={false}
-        onEnded={() => callback()}
+        onEnded={() => {
+          setTimeout(() => {
+            callback();
+          }, 1000);
+        }}
         onLoadedMetadata={() => {
           audioRef.current?.play();
         }}

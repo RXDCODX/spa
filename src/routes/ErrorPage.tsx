@@ -24,7 +24,7 @@ export const ErrorPage = ({ typeError, icon: Icon }: ErrorPageProps) => {
       </p>
       <button
         className={styles["error-button"]}
-        onClick={() => window.location.reload()}
+        onClick={() => (window.location.pathname = "/")}
       >
         Перезагрузить страницу
       </button>

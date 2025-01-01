@@ -1,0 +1,3 @@
+@echo off
+cd /d %~dp0
+yarn vite --mode prod --port 9159

@@ -39,13 +39,15 @@ export default function Announce({ title, callback }: Props) {
   };
 
   interface FadeOutProps {
-    duration: number; // Длительность анимации в миллисекундах
-    children: React.ReactNode; // Содержимое элемента
+    duration: number;
+    delay: number;
+    children: React.ReactNode;
     callback: () => void;
   }
 
   const FadeOut: React.FC<FadeOutProps> = ({
     duration,
+    delay,
     children,
     callback,
   }) => {
@@ -55,30 +57,52 @@ export default function Announce({ title, callback }: Props) {
     useEffect(() => {
       const element = elementRef.current;
       if (element) {
-        element.style.transition = `opacity ${duration}ms`;
-        element.style.opacity = "0";
+        const delayTimer = setTimeout(() => {
+          if (element) {
+            element.style.transition = `opacity ${duration}ms`;
+            element.style.opacity = "0";
 
-        const timer = setTimeout(() => {
-          setIsVisible(false);
-        }, duration);
+            const fadeOutTimer = setTimeout(() => {
+              setIsVisible(false);
+              callback();
+            }, duration);
+
+            return () => {
+              clearTimeout(fadeOutTimer);
+            };
+          }
+        }, delay);
 
         return () => {
-          clearTimeout(timer);
-          callback();
+          clearTimeout(delayTimer);
         };
       }
-    }, [duration]);
+    }, [duration, delay, callback]);
 
     return isVisible ? <div ref={elementRef}>{children}</div> : null;
   };
 
   return (
-    <FadeOut duration={3000} callback={callback}>
-      <Textfit forceSingleModeWidth min={1} max={150}>
-        <div ref={nodeRef} style={defaultStyle} className="announce">
+    <FadeOut duration={2000} delay={3000} callback={callback}>
+      <div ref={nodeRef} style={defaultStyle} className="announce">
+        <Textfit
+          id="announce"
+          forceSingleModeWidth
+          min={1}
+          max={1500}
+          style={{
+            width: "100%",
+            height: "100%",
+            alignItems: "center",
+            display: "flex",
+            justifySelf: "center",
+            alignSelf: "center",
+            justifyContent: "center",
+          }}
+        >
           {title}
-        </div>
-      </Textfit>
+        </Textfit>
+      </div>
     </FadeOut>
   );
 }

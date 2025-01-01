@@ -1,5 +1,6 @@
 import { CSSProperties, useEffect, useRef, useState } from "react";
 
+import { getRandomRotation } from "../../../shared/Utils";
 import { getCoordinates, MediaDto } from "../..";
 import styles from "./Media.module.scss";
 
@@ -16,8 +17,6 @@ export function Image({ mediaInfo: MediaInfo, callBack }: Props) {
   const textInfo = mediaInfo.textInfo;
   const positionInfo = mediaInfo.positionInfo;
 
-  const isRotate = positionInfo.isRotated;
-
   useEffect(() => {
     setTimeout(() => callBack(), metaInfo.duration * 1000);
   }, [callBack]);
@@ -27,11 +26,10 @@ export function Image({ mediaInfo: MediaInfo, callBack }: Props) {
   const [style, setStyle] = useState<CSSProperties>({
     maxWidth: positionInfo.width + "px",
     maxHeight: positionInfo.height + "px",
-    transform: isRotate ? `rotate(${positionInfo.rotation}deg)` : "",
   });
 
   return (
-    <div ref={ref} className={styles["image-container"]} style={style}>
+    <div ref={ref} className={styles["imageContainer"]}>
       {positionInfo.isProportion ? (
         <img
           id={id}
@@ -40,9 +38,11 @@ export function Image({ mediaInfo: MediaInfo, callBack }: Props) {
           alt={"IMAGE ERROR"}
           className={styles.media}
           style={style}
-          onLoadedMetadata={(event) => {
+          onLoad={(event) => {
             const cords = getCoordinates(event.currentTarget, mediaInfo);
-            setStyle({ ...styles, ...cords });
+            const rotation = getRandomRotation(mediaInfo);
+            const size = { ...style };
+            setStyle({ ...cords, ...rotation, ...size });
           }}
         />
       ) : (
@@ -53,9 +53,11 @@ export function Image({ mediaInfo: MediaInfo, callBack }: Props) {
           alt={"IMAGE ERROR"}
           className={styles.media}
           style={style}
-          onLoadedMetadata={(event) => {
+          onLoad={(event) => {
             const cords = getCoordinates(event.currentTarget, mediaInfo);
-            setStyle({ ...styles, ...cords });
+            const rotation = getRandomRotation(mediaInfo);
+            const size = { ...style };
+            setStyle({ ...cords, ...rotation, ...size });
           }}
         />
       )}

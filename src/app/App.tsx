@@ -1,3 +1,5 @@
+import "./App.module.scss";
+
 import Routes from "../routes/Routes";
 
 function App() {

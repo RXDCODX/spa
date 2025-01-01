@@ -1,12 +1,13 @@
-import { GenericEmote, MediaInfo } from "..";
+import { GenericEmote, MediaInfo } from "../../components";
 
-export { BigTextBlockForVoice } from "./BigTextBlockForVoice";
-export { BigTextBlockForAudio } from "./BigTextBlockForAudio";
+export { BigTextBlockForVoice } from "./BigTexts/BigTextBlockForVoice";
+export { BigTextBlockForAudio } from "./BigTexts/BigTextBlockForAudio";
+export { FullText } from "./FullText/FullText";
 
 export function replaceEmotes(
   collection?: GenericEmote[] | null,
   text?: string | null
-) {
+): string | undefined {
   if (text) {
     if (collection) {
       collection.forEach(function (elem) {
@@ -37,7 +38,7 @@ export function replaceEmotes(
     }
   }
 
-  return text;
+  return text as string | undefined;
 }
 
 export function AddBorderToElement(info: MediaInfo): React.CSSProperties {
@@ -98,3 +99,22 @@ export function getFileExtensionWithoutDot(extension: string | null) {
 
   return result;
 }
+
+export function getRandomRotation(mediaInfo: MediaInfo) {
+  const returnObj: React.CSSProperties = {};
+
+  if (mediaInfo?.positionInfo.isRotated) {
+    returnObj.transform = `rotate(${getRandomInt(mediaInfo.positionInfo.rotation * -1, mediaInfo.positionInfo.rotation)}deg)`;
+  }
+
+  return returnObj;
+}
+
+export const getRandomColor = (): string => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};

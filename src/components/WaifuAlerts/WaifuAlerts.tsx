@@ -1,8 +1,10 @@
-import { useEffect, useReducer } from "react";
+import { useReducer, useRef, useState } from "react";
 import { Textfit } from "react-textfit";
 
 import { SignalRContext } from "../../app";
 import { Waifu } from "../../shared/api/generated/baza";
+import animate from "../../shared/styles/animate.module.scss";
+import Announce from "../../shared/Utils/Announce/Announce";
 import styles from "./WaifuAlerts.module.scss";
 
 enum StateStatus {
@@ -67,7 +69,10 @@ export default function WaifuAlerts() {
     messages: [],
     isWaifuShowing: false,
   };
+
   const [{ currentMessage }, dispatch] = useReducer(reducer, initState);
+  const [announced, setAnnounced] = useState(false);
+  const divHard = useRef<HTMLDivElement>(null);
 
   SignalRContext.useSignalREffect(
     "waifuroll",
@@ -125,23 +130,37 @@ export default function WaifuAlerts() {
     }
   }
 
-  useEffect(() => {
-    if (currentMessage) {
-      setTimeout(() => {
-        handleRemoveEvent(currentMessage);
-      }, 7000);
-    }
-  }, [currentMessage]);
-
   return (
     <>
+      {!announced && (
+        <Announce title={"WaifuRoll"} callback={() => setAnnounced(true)} />
+      )}
       {currentMessage && (
-        <div className={styles.baza}>
-          <div>
+        <div
+          ref={divHard}
+          className={
+            styles.baza + " " + animate.bounceIn + " " + animate.animated
+          }
+        >
+          <div className={styles["alert-box"]}>
             <img
               src={currentMessage.waifu.imageUrl}
               style={{ height: "498px", width: "320px" }}
-            ></img>
+              onLoad={() => {
+                setTimeout(() => {
+                  divHard.current!.onanimationend = () => {
+                    handleRemoveEvent(currentMessage);
+                  };
+
+                  divHard.current!.className =
+                    styles.baza +
+                    " " +
+                    animate.bounceOut +
+                    " " +
+                    animate.animated;
+                }, 7000);
+              }}
+            />
           </div>
           <div className={styles["alert-box"]}>
             <span className="text-shadow block-text" style={{ color: "white" }}>

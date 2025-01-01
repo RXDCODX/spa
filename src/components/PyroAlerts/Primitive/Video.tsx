@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 
+import { getRandomRotation } from "../../../shared/Utils";
 import { getCoordinates, MediaDto, replaceEmotes } from "../..";
 import styles from "./Media.module.scss";
 
@@ -19,23 +20,15 @@ export function Video({ MediaInfo, callback }: Props) {
     metaInfo,
   } = MediaInfo.mediaInfo;
 
-  const isRotate = positionInfo.isRotated;
-
   const player = useRef<HTMLVideoElement>(null);
 
-  const [cords, setCords] = useState<React.CSSProperties>({});
+  const [baseStyles, setBaseStyles] = useState<React.CSSProperties>({
+    width: positionInfo.width + "px",
+    height: positionInfo.height + "px",
+  });
 
   return (
-    <div
-      id={id}
-      className={styles.media}
-      style={{
-        ...cords,
-        maxWidth: positionInfo.width + "px",
-        maxHeight: positionInfo.height + "px",
-        transform: isRotate ? `rotate(${positionInfo.rotation}deg)` : "",
-      }}
-    >
+    <div id={id} className={styles.media} style={baseStyles}>
       <div>
         <span style={{ color: textInfo.textColor }}>
           {isWithGenericEmotes
@@ -48,13 +41,19 @@ export function Video({ MediaInfo, callback }: Props) {
         src={fileInfo.localFilePath}
         controls={false}
         autoPlay
+        style={baseStyles}
         onLoadedMetadata={(event) => {
           if (player.current) {
             const newCords = getCoordinates(
               player.current,
               MediaInfo.mediaInfo
             );
-            setCords(newCords);
+            const bazestyles = { ...baseStyles };
+            setBaseStyles({
+              ...bazestyles,
+              ...newCords,
+              ...getRandomRotation(MediaInfo.mediaInfo),
+            });
           }
 
           if (event.currentTarget.duration < metaInfo.duration) {

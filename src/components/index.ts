@@ -6,7 +6,7 @@ export {
   getFileExtensionWithoutDot,
   getRandomInt,
   replaceEmotes,
-} from "./Utils";
+} from "../shared/Utils";
 
 export {
   BadgeColor,

@@ -1,8 +1,8 @@
-import { useEffect, useReducer, useState } from "react";
+import { useCallback, useReducer, useState } from "react";
 
 import { SignalRContext } from "../../app";
+import Announce from "../../shared/Utils/Announce/Announce";
 import { MediaDto, MediaType } from "..";
-import Announce from "../Utils/Announce";
 import { Audio, Image, Video, Voice } from "./Primitive";
 import TelegramSticker from "./Primitive/TelegramSticker";
 
@@ -13,62 +13,54 @@ enum StateStatus {
 
 interface State {
   messages: (MediaDto | undefined)[];
-  audioQueue: (MediaDto | undefined)[];
-  isAudioPlaying: boolean;
+  currentTrack?: MediaDto;
 }
 
 function reducer(
   state: State,
   action: { type: StateStatus; mediaInfo?: MediaDto }
-) {
+): State {
+  const md = action.mediaInfo;
+  const ft = md?.mediaInfo.fileInfo;
+
   switch (action.type) {
     case StateStatus.add:
       if (
-        action.mediaInfo &&
-        action.mediaInfo.mediaInfo.fileInfo.type === MediaType.Audio
+        md &&
+        (ft!.type === MediaType.Audio || ft!.type === MediaType.Voice) &&
+        !state.currentTrack
       ) {
-        if (state.isAudioPlaying) {
-          return {
-            ...state,
-            audioQueue: [...state.audioQueue, action.mediaInfo],
-          };
-        } else {
-          return {
-            ...state,
-            messages: [...state.messages, action.mediaInfo],
-            isAudioPlaying: true,
-          };
-        }
+        return {
+          messages: [...state.messages],
+          currentTrack: md,
+        };
       }
 
-      return { ...state, messages: [...state.messages, action.mediaInfo] };
+      return { ...state, messages: [...state.messages, md] };
 
     case StateStatus.remove:
       if (
-        action.mediaInfo &&
-        action.mediaInfo.mediaInfo.fileInfo.type === MediaType.Audio
+        md &&
+        (ft!.type === MediaType.Audio || ft!.type === MediaType.Voice)
       ) {
-        if (state.isAudioPlaying) {
-          const audio = state.audioQueue.shift();
-          return {
-            ...state,
-            messages: [
-              ...state.messages.filter(
-                (m) => m!.mediaInfo.id !== action.mediaInfo!.mediaInfo.id
-              ),
-              audio,
-            ],
-            isAudioPlaying: true,
-          };
-        } else {
-          throw new Error("Audio is not playing");
-        }
+        const audio = state.messages.find(
+          (e) =>
+            (ft!.type === MediaType.Audio || ft!.type === MediaType.Voice) &&
+            e?.mediaInfo.index != md.mediaInfo.index
+        );
+
+        return {
+          messages: state.messages.filter(
+            (m) => m!.mediaInfo.index != md!.mediaInfo.index
+          ),
+          currentTrack: audio,
+        };
       }
 
       return {
         ...state,
         messages: state.messages.filter(
-          (m) => m!.mediaInfo.id !== action.mediaInfo!.mediaInfo.id
+          (m) => m!.mediaInfo.index != md!.mediaInfo.index
         ),
       };
   }
@@ -79,81 +71,87 @@ export default function PyroAlerts() {
 
   const initState: State = {
     messages: [],
-    audioQueue: [],
-    isAudioPlaying: false,
+    currentTrack: undefined,
   };
-  const [{ messages }, dispatch] = useReducer(reducer, initState);
+  const [{ messages, currentTrack }, dispatch] = useReducer(reducer, initState);
   const [announced, setAnnounced] = useState(false);
+  const [count, setCount] = useState(0);
 
   SignalRContext.useSignalREffect(
     "alert",
     (message) => {
       const parsedMessage: MediaDto = { ...message };
       parsedMessage.mediaInfo.fileInfo.localFilePath =
-        "https://localhost:9155/" +
+        import.meta.env.VITE_BASE_PATH +
         parsedMessage.mediaInfo.fileInfo.localFilePath;
-      handleAddEvent(parsedMessage);
+
+      parsedMessage.mediaInfo.index = count;
+      setCount(count + 1);
+      add(parsedMessage);
     },
     []
   );
 
-  function handleAddEvent(mediaInfo: MediaDto) {
-    dispatch({ type: StateStatus.add, mediaInfo });
-  }
+  const add = useCallback(
+    function handleAddEvent(mediaInfo: MediaDto) {
+      dispatch({ type: StateStatus.add, mediaInfo });
+    },
+    [messages, currentTrack, dispatch]
+  );
 
-  function handleRemoveEvent(mediaInfo: MediaDto) {
-    dispatch({ type: StateStatus.remove, mediaInfo });
-  }
-
-  useEffect(() => {
-    setAnnounced(false);
-  }, []);
+  const remove = useCallback(
+    function handleRemoveEvent(mediaInfo: MediaDto) {
+      dispatch({ type: StateStatus.remove, mediaInfo });
+    },
+    [messages, currentTrack, dispatch]
+  );
 
   return (
     <>
       {!announced && (
         <Announce title={"PyroAlerts"} callback={() => setAnnounced(true)} />
       )}
-      {
-        <div id="animation-container">
-          <div id="media-container">
-            {messages.map((message) => {
-              if (!message) return null;
+      {messages.map((message) => {
+        if (!message) return null;
 
-              const { fileInfo, id } = message.mediaInfo;
-              const callback = () => handleRemoveEvent(message);
+        const { fileInfo, index } = message.mediaInfo;
+        const callback = () => remove(message);
 
-              switch (fileInfo.type) {
-                case MediaType.Image || MediaType.Gif:
-                  return (
-                    <Image key={id} mediaInfo={message} callBack={callback} />
-                  );
-                case MediaType.Video:
-                  return (
-                    <Video key={id} MediaInfo={message} callback={callback} />
-                  );
-                case MediaType.Audio:
-                  return (
-                    <Audio key={id} mediaInfo={message} callback={callback} />
-                  );
-                case MediaType.Voice:
-                  return <Voice callback={callback} mediaInfo={message} />;
-                case MediaType.TelegramSticker:
-                  return (
-                    <TelegramSticker
-                      key={id}
-                      mediaInfo={message}
-                      callBack={callback}
-                    />
-                  );
-                default:
-                  console.dir(message);
-                  return null;
-              }
-            })}
-          </div>
-        </div>
-      }
+        switch (fileInfo.type) {
+          case MediaType.Image || MediaType.Gif:
+            return (
+              <Image key={index} mediaInfo={message} callBack={callback} />
+            );
+          case MediaType.Video:
+            return (
+              <Video key={index} MediaInfo={message} callback={callback} />
+            );
+          case MediaType.TelegramSticker:
+            return (
+              <TelegramSticker
+                key={index}
+                mediaInfo={message}
+                callBack={callback}
+              />
+            );
+        }
+      })}
+      {currentTrack &&
+        currentTrack.mediaInfo.fileInfo.type === MediaType.Audio && (
+          <Audio
+            key={currentTrack.mediaInfo.index}
+            mediaInfo={currentTrack}
+            callback={() => remove(currentTrack)}
+          />
+        )}
+      {currentTrack &&
+        currentTrack.mediaInfo.fileInfo.type === MediaType.Voice && (
+          <Voice
+            key={currentTrack.mediaInfo.index}
+            mediaInfo={currentTrack}
+            callback={() => remove(currentTrack)}
+          />
+        )}
     </>
   );
 }
