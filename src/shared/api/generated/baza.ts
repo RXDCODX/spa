@@ -190,6 +190,8 @@ export interface MediaPositionInfo {
   /** @format int32 */
   yCoordinate: number;
   randomCoordinates: boolean;
+  IsHorizontalCenter: boolean;
+  IsVerticallCenter: boolean;
 }
 
 export interface MediaStylesInfo {

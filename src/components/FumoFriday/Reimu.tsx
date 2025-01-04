@@ -23,6 +23,7 @@ export function Reimu({ callback, displayName }: Props) {
           src={import.meta.env.VITE_BASE_PATH + "Alerts/Reimu.webm"}
           autoPlay
           controls={false}
+          style={{ maxWidth: "100%" }}
           onEnded={() => {
             setShow(false);
             setTimeout(() => {

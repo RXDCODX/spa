@@ -1022,6 +1022,13 @@
   dependencies:
     "@swc/core" "^1.7.26"
 
+"@vkid/sdk@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@vkid/sdk/-/sdk-2.4.0.tgz#ee9ceb8c67b89113abab8aa84cda18fa31c5ecca"
+  integrity sha512-P5LEQ6O5/vUYelTjXP8F6GSXoQEICXJY0vtHL29y8Sq8K1TmK1oLdjEC8HxifAOHI9cSCltFG3jZbYnXcQyMsw==
+  dependencies:
+    crypto-js "^4.1.1"
+
 abort-controller@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/abort-controller/-/abort-controller-3.0.0.tgz#eaf54d53b62bae4138e809ca225c8439a6efb392"
@@ -1345,6 +1352,11 @@ cross-spawn@^7.0.5:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
+
+crypto-js@^4.1.1:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.2.0.tgz#4d931639ecdfd12ff80e8186dba6af2c2e856631"
+  integrity sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==
 
 css-color-keywords@^1.0.0:
   version "1.0.0"

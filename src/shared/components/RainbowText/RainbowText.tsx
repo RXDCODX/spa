@@ -10,13 +10,13 @@ interface RainbowTextProps {
   style?: React.CSSProperties;
 }
 
-const RainbowText: React.FC<RainbowTextProps> = ({
+const RainbowText = ({
   text,
   saturation = 1,
   lightness = 0.5,
   className = "",
   style = {},
-}) => {
+}: RainbowTextProps) => {
   const characters = useMemo(() => text.split(""), [text]);
   const gradientSize = useMemo(
     () => characters.filter((char) => char !== " ").length,

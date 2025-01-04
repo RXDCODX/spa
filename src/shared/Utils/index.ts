@@ -62,7 +62,7 @@ export function getCoordinates(
   ref: HTMLImageElement | HTMLVideoElement,
   info: MediaInfo
 ): React.CSSProperties {
-  const returnObj: React.CSSProperties = {};
+  var returnObj: React.CSSProperties = {};
 
   if (info?.positionInfo.randomCoordinates) {
     if (!ref?.width) {
@@ -84,8 +84,40 @@ export function getCoordinates(
     returnObj.left = `${randomX >= 1 ? randomX : 0}px`;
     returnObj.top = `${randomY >= 1 ? randomY : 0}px`;
   } else {
-    returnObj.left = `${info.positionInfo.xCoordinate}px`;
-    returnObj.top = `${info.positionInfo.yCoordinate}px`;
+    if (
+      info?.positionInfo.IsHorizontalCenter &&
+      info?.positionInfo.IsVerticallCenter
+    ) {
+      returnObj = {
+        ...returnObj,
+        margin: 0,
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        msTransform: "translate(-50%, -50%)",
+        transform: "translate(-50%, -50%)",
+      };
+    } else if (info?.positionInfo.IsHorizontalCenter) {
+      returnObj = {
+        ...returnObj,
+        margin: 0,
+        position: "absolute",
+        left: "50%",
+        msTransform: "translateX(-50%)",
+        transform: "translateX(-50%)",
+        top: info.positionInfo.yCoordinate + "px",
+      };
+    } else if (info?.positionInfo.IsVerticallCenter) {
+      returnObj = {
+        ...returnObj,
+        margin: 0,
+        position: "absolute",
+        top: "50%",
+        msTransform: "translateY(-50%)",
+        transform: "translateY(-50%)",
+        left: info.positionInfo.xCoordinate + "px",
+      };
+    }
   }
 
   console.log(returnObj);

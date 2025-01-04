@@ -34,6 +34,7 @@ export function Cirno({ callback, displayName }: Props) {
           src={import.meta.env.VITE_BASE_PATH + "Alerts/Cirno.webm"}
           autoPlay
           controls={false}
+          style={{ maxWidth: "100%" }}
           onEnded={() => {
             setShow(false);
             setTimeout(() => {
