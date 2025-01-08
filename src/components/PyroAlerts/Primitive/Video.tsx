@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { Textfit } from "react-textfit";
 
+import { KeyWordText } from "../../../shared/components/KeyWordText";
 import { getRandomRotation } from "../../../shared/Utils";
 import { getCoordinates, MediaDto, replaceEmotes } from "../..";
 import styles from "./Media.module.scss";
@@ -10,6 +11,15 @@ interface Props {
   MediaInfo: MediaDto;
 }
 
+/**
+ * Component for rendering a video with a text overlay.
+ *
+ * @param {Object} props Component props.
+ * @param {MediaDto} props.MediaInfo Media info for the video.
+ * @param {function} props.callback Callback function to be called when the video finishes playing.
+ *
+ * @returns {ReactElement} The rendered video component.
+ */
 export function Video({ MediaInfo, callback }: Props) {
   const {
     emotes,
@@ -46,10 +56,7 @@ export function Video({ MediaInfo, callback }: Props) {
           style={baseStyles}
           onLoadedMetadata={(event) => {
             if (player.current) {
-              const newCords = getCoordinates(
-                player.current,
-                MediaInfo.mediaInfo
-              );
+              const newCords = getCoordinates(MediaInfo.mediaInfo);
               const bazestyles = { ...baseStyles };
               setBaseStyles({
                 ...bazestyles,
@@ -82,9 +89,17 @@ export function Video({ MediaInfo, callback }: Props) {
         min={30}
         style={{ justifyContent: "center", display: "flex" }}
       >
-        {isWithGenericEmotes
-          ? replaceEmotes(emotes, textInfo.text)
-          : textInfo.text}
+        <KeyWordText
+          keyWordColor={textInfo.keyWordsColor}
+          classNameForKeyWordedSpan={styles.key_word}
+          keySymbol="#"
+          isQuouted
+          keyWordedString={
+            (isWithGenericEmotes
+              ? replaceEmotes(emotes, textInfo.text)
+              : textInfo.text) || ""
+          }
+        />
       </Textfit>
     </div>
   );

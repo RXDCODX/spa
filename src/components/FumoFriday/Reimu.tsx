@@ -34,7 +34,13 @@ export function Reimu({ callback, displayName }: Props) {
       </div>
       <div className={styles.text}>
         <Textfit mode="single">
-          <div>Поздравляю {displayName.message}!</div>
+          <div>
+            Поздравляю{" "}
+            <span style={{ color: displayName.color }}>
+              {displayName.message}
+            </span>
+            !
+          </div>
           <div>
             <RainbowText text="HAPPY FUMO FRIDAY!" />
           </div>

@@ -5,6 +5,7 @@ import { FumoFridayController } from "./FumoFridayController";
 
 export function FumoFriday() {
   const [announced, setAnnounced] = useState<boolean>(false);
+  document.title = "FumoFriday";
 
   return (
     <>

@@ -86,6 +86,7 @@ export default function PyroAlerts() {
         parsedMessage.mediaInfo.fileInfo.localFilePath;
 
       parsedMessage.mediaInfo.index = count;
+      console.log(parsedMessage);
       setCount(count + 1);
       add(parsedMessage);
     },

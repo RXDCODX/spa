@@ -26,9 +26,10 @@ export function Audio({ mediaInfo, callback }: Props) {
             callback();
           }, 1000);
         }}
-        onLoadedMetadata={() => {
-          audioRef.current?.play();
+        onCanPlay={(event) => {
+          event.currentTarget?.play();
         }}
+        crossOrigin="anonymous"
       >
         <source src={fileInfo.localFilePath} />
       </audio>
