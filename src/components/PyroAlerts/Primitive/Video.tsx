@@ -56,7 +56,10 @@ export function Video({ MediaInfo, callback }: Props) {
           style={baseStyles}
           onLoadedMetadata={(event) => {
             if (player.current) {
-              const newCords = getCoordinates(MediaInfo.mediaInfo);
+              const newCords = getCoordinates(
+                player.current,
+                MediaInfo.mediaInfo
+              );
               const bazestyles = { ...baseStyles };
               setBaseStyles({
                 ...bazestyles,

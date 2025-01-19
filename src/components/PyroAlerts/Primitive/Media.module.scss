@@ -2,11 +2,9 @@
   display: flex;
   flex-direction: column;
   color: white;
-  left: 0;
   max-height: 100%;
   max-width: 100%;
-  position: relative;
-  top: 0;
+  position: absolute;
 }
 
 .imageContainer {
@@ -16,6 +14,7 @@
   justify-content: center;
   width: 100%;
   height: 100%;
+  position: absolute;
 }
 
 .key_word {
