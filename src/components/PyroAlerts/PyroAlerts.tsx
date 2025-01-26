@@ -13,7 +13,6 @@ enum StateStatus {
 
 interface State {
   messages: (MediaDto | undefined)[];
-  currentTrack?: MediaDto;
 }
 
 function reducer(
@@ -21,44 +20,13 @@ function reducer(
   action: { type: StateStatus; mediaInfo?: MediaDto }
 ): State {
   const md = action.mediaInfo;
-  const ft = md?.mediaInfo.fileInfo;
 
   switch (action.type) {
     case StateStatus.add:
-      if (
-        md &&
-        (ft!.type === MediaType.Audio || ft!.type === MediaType.Voice) &&
-        !state.currentTrack
-      ) {
-        return {
-          messages: [...state.messages],
-          currentTrack: md,
-        };
-      }
-
-      return { ...state, messages: [...state.messages, md] };
+      return { messages: [...state.messages, md] };
 
     case StateStatus.remove:
-      if (
-        md &&
-        (ft!.type === MediaType.Audio || ft!.type === MediaType.Voice)
-      ) {
-        const audio = state.messages.find(
-          (e) =>
-            (ft!.type === MediaType.Audio || ft!.type === MediaType.Voice) &&
-            e?.mediaInfo.index != md.mediaInfo.index
-        );
-
-        return {
-          messages: state.messages.filter(
-            (m) => m!.mediaInfo.index != md!.mediaInfo.index
-          ),
-          currentTrack: audio,
-        };
-      }
-
       return {
-        ...state,
         messages: state.messages.filter(
           (m) => m!.mediaInfo.index != md!.mediaInfo.index
         ),
@@ -71,9 +39,8 @@ export default function PyroAlerts() {
 
   const initState: State = {
     messages: [],
-    currentTrack: undefined,
   };
-  const [{ messages, currentTrack }, dispatch] = useReducer(reducer, initState);
+  const [{ messages }, dispatch] = useReducer(reducer, initState);
   const [announced, setAnnounced] = useState(false);
   const [count, setCount] = useState(0);
 
@@ -97,14 +64,14 @@ export default function PyroAlerts() {
     function handleAddEvent(mediaInfo: MediaDto) {
       dispatch({ type: StateStatus.add, mediaInfo });
     },
-    [messages, currentTrack, dispatch]
+    [messages, dispatch]
   );
 
   const remove = useCallback(
     function handleRemoveEvent(mediaInfo: MediaDto) {
       dispatch({ type: StateStatus.remove, mediaInfo });
     },
-    [messages, currentTrack, dispatch]
+    [messages, dispatch]
   );
 
   return (
@@ -127,6 +94,14 @@ export default function PyroAlerts() {
             return (
               <Video key={index} MediaInfo={message} callback={callback} />
             );
+          case MediaType.Audio:
+            return (
+              <Audio key={index} mediaInfo={message} callback={callback} />
+            );
+          case MediaType.Voice:
+            return (
+              <Voice key={index} mediaInfo={message} callback={callback} />
+            );
           case MediaType.TelegramSticker:
             return (
               <TelegramSticker
@@ -137,22 +112,6 @@ export default function PyroAlerts() {
             );
         }
       })}
-      {currentTrack &&
-        currentTrack.mediaInfo.fileInfo.type === MediaType.Audio && (
-          <Audio
-            key={currentTrack.mediaInfo.index}
-            mediaInfo={currentTrack}
-            callback={() => remove(currentTrack)}
-          />
-        )}
-      {currentTrack &&
-        currentTrack.mediaInfo.fileInfo.type === MediaType.Voice && (
-          <Voice
-            key={currentTrack.mediaInfo.index}
-            mediaInfo={currentTrack}
-            callback={() => remove(currentTrack)}
-          />
-        )}
     </>
   );
 }
