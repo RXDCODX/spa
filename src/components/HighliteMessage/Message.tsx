@@ -148,7 +148,9 @@ export default function Message() {
     <>
       {currentMessage && (
         <div
-          id={styles.container + " " + animate.fadeIn + " " + animate.animated}
+          className={
+            styles.container + " " + animate.fadeIn + " " + animate.animated
+          }
           ref={divHard}
         >
           <div className={styles["buble-image"]}>
@@ -183,7 +185,7 @@ export default function Message() {
                 controls={false}
                 loop
                 muted
-                onLoad={() => {
+                onLoadedMetadata={() => {
                   setTimeout(() => {
                     divHard.current!.onanimationend = () => {
                       handleRemoveEvent(currentMessage);
