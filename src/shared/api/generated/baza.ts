@@ -18,28 +18,28 @@ export enum BadgeColor {
 }
 
 export interface BadgeEmoteSet {
-  setId?: string | null;
-  versions?: BadgeVersion[] | null;
+  setId?: string;
+  versions?: BadgeVersion[];
 }
 
 export interface BadgeVersion {
-  id?: string | null;
-  imageUrl1x?: string | null;
-  imageUrl2x?: string | null;
-  imageUrl4x?: string | null;
+  id?: string;
+  imageUrl1x?: string;
+  imageUrl2x?: string;
+  imageUrl4x?: string;
 }
 
 export type ChatMessage = TwitchLibMessage & {
-  badgeInfo?: StringStringKeyValuePair[] | null;
+  badgeInfo?: StringStringKeyValuePair[];
   /** @format int32 */
   bits?: number;
   /** @format double */
   bitsInDollars?: number;
-  channel?: string | null;
-  cheerBadge?: CheerBadge | null;
-  customRewardId?: string | null;
-  emoteReplacedMessage?: string | null;
-  id?: string | null;
+  channel?: string;
+  cheerBadge?: CheerBadge;
+  customRewardId?: string;
+  emoteReplacedMessage?: string;
+  id?: string;
   isBroadcaster?: boolean;
   isFirstMessage?: boolean;
   isHighlighted?: boolean;
@@ -50,21 +50,21 @@ export type ChatMessage = TwitchLibMessage & {
   isVip?: boolean;
   isStaff?: boolean;
   isPartner?: boolean;
-  message?: string | null;
+  message?: string;
   noisy?: Noisy;
-  roomId?: string | null;
+  roomId?: string;
   /** @format int32 */
   subscribedMonthCount?: number;
-  tmiSentTs?: string | null;
-  chatReply?: ChatReply | null;
+  tmiSentTs?: string;
+  chatReply?: ChatReply;
 };
 
 export interface ChatReply {
-  parentDisplayName?: string | null;
-  parentMsgBody?: string | null;
-  parentMsgId?: string | null;
-  parentUserId?: string | null;
-  parentUserLogin?: string | null;
+  parentDisplayName?: string;
+  parentMsgBody?: string;
+  parentMsgId?: string;
+  parentUserId?: string;
+  parentUserLogin?: string;
 }
 
 export interface CheerBadge {
@@ -90,18 +90,18 @@ export interface Color {
 }
 
 export interface Emote {
-  id?: string | null;
-  name?: string | null;
+  id?: string;
+  name?: string;
   /** @format int32 */
   startIndex: number;
   /** @format int32 */
   endIndex: number;
-  imageUrl?: string | null;
+  imageUrl?: string;
 }
 
 export interface EmoteSet {
-  emotes?: Emote[] | null;
-  rawEmoteSetString?: string | null;
+  emotes?: Emote[];
+  rawEmoteSetString?: string;
 }
 
 export interface GenericEmote {
@@ -111,18 +111,18 @@ export interface GenericEmote {
 }
 
 export interface GetGlobalChatBadgesResponse {
-  emoteSet?: BadgeEmoteSet[] | null;
+  emoteSet?: BadgeEmoteSet[];
 }
 
 export interface Image {
-  signature?: string | null;
-  extension?: string | null;
+  signature?: string;
+  extension?: string;
   /** @format int32 */
   imageID: number;
   /** @format int32 */
   favorites: number;
-  dominantColor?: string | null;
-  source?: string | null;
+  dominantColor?: string;
+  source?: string;
   artist?: any;
   /** @format date-time */
   uploadedAt: string;
@@ -134,9 +134,9 @@ export interface Image {
   height: number;
   /** @format int32 */
   byteSize: number;
-  url?: string | null;
-  previewURL?: string | null;
-  tags?: Tag[] | null;
+  url?: string;
+  previewURL?: string;
+  tags?: Tag[];
 }
 
 export interface MediaDto {
@@ -160,7 +160,7 @@ export interface MediaInfo {
   fileInfo: MediaFileInfo;
   positionInfo: MediaPositionInfo;
   isWithGenericEmotes: boolean;
-  emotes?: GenericEmote[] | null;
+  emotes?: GenericEmote[];
   metaInfo: MediaMetaInfo;
   stylesInfo: MediaStylesInfo;
 }

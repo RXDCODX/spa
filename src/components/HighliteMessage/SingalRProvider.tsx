@@ -1,21 +1,23 @@
-// import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import { JSX } from "react";
 
-import App from "./App.tsx";
-import { SignalRContext } from "./index.ts";
+import { SignalRContext } from "../../app";
 
-createRoot(document.getElementById("root")!).render(
-  <>
+interface Props {
+  children: JSX.Element;
+}
+
+export default function SignalRProvider({ children }: Props) {
+  return (
     <SignalRContext.Provider
       automaticReconnect={true}
       onError={(error) => new Promise((resolve) => resolve(console.log(error)))}
       onClosed={(event) => console.log(event)}
       logger={console}
       withCredentials={false}
-      url={import.meta.env.VITE_BASE_PATH + "drum"}
+      url={import.meta.env.VITE_BASE_PATH + "chathub"}
       logMessageContent
     >
-      <App />
+      {children}
     </SignalRContext.Provider>
-  </>
-);
+  );
+}

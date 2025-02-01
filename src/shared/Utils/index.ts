@@ -1,4 +1,7 @@
+import parse from "html-react-parser";
+
 import { GenericEmote, MediaInfo } from "../../components";
+import { BadgeEmoteSet, ChatMessage } from "../api/generated/baza";
 
 export { BigTextBlockForVoice } from "./BigTexts/BigTextBlockForVoice";
 export { BigTextBlockForAudio } from "./BigTexts/BigTextBlockForAudio";
@@ -7,7 +10,7 @@ export { FullText } from "./FullText/FullText";
 export function replaceEmotes(
   collection?: GenericEmote[] | null,
   text?: string | null
-): string | undefined {
+) {
   if (text) {
     if (collection) {
       collection.forEach(function (elem) {
@@ -38,7 +41,13 @@ export function replaceEmotes(
     }
   }
 
-  return text as string | undefined;
+  if (!text) {
+    return undefined;
+  }
+
+  const result = parse(text);
+
+  return result;
 }
 
 export function AddBorderToElement(info: MediaInfo): React.CSSProperties {
@@ -150,3 +159,35 @@ export const getRandomColor = (): string => {
   }
   return color;
 };
+
+export function replaceBadges(
+  badges: BadgeEmoteSet[],
+  chatMessage: ChatMessage
+) {
+  let sub = "";
+  const text = chatMessage.message;
+
+  chatMessage.badges?.forEach(function (b) {
+    const set = badges.find((e) => e.setId == b.key);
+    const lastVersion = set?.versions?.slice(-1);
+
+    if (!lastVersion) {
+      return undefined;
+    }
+
+    const link = lastVersion[0].imageUrl1x;
+    sub = sub + `<img class="badge" src="${link}" type="image/png">\n`;
+  });
+
+  if (!text) {
+    return undefined;
+  }
+
+  const result = parse(sub);
+
+  if (typeof result === "string") {
+    return undefined;
+  }
+
+  return result;
+}
