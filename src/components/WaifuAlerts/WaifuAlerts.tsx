@@ -1,4 +1,4 @@
-import { useReducer, useRef, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { Textfit } from "react-textfit";
 
 import { SignalRContext } from "../../app";
@@ -41,21 +41,29 @@ function reducer(
 
     case StateStatus.remove:
       if (state.messages.length > 0) {
-        const newWaifu = state.messages
-          .filter(
-            (message) => message.waifu.shikiId !== action.waifu.waifu.shikiId
-          )
-          .shift();
+        const newArray = state.messages.filter(
+          (message) => message.waifu.shikiId !== action.waifu.waifu.shikiId
+        );
+
+        if (newArray.length > 0) {
+          const newWaifu = newArray[0];
+
+          return {
+            messages: newArray,
+            currentMessage: newWaifu,
+            isWaifuShowing: true,
+          };
+        }
 
         return {
-          ...state,
-          messages: state.messages,
-          currentMessage: newWaifu,
+          isWaifuShowing: false,
+          messages: newArray,
+          currentMessage: undefined,
         };
       }
 
       return {
-        ...state,
+        messages: [],
         currentMessage: undefined,
         isWaifuShowing: false,
       };
@@ -130,6 +138,10 @@ export default function WaifuAlerts() {
     }
   }
 
+  useEffect(() => {
+    console.log(currentMessage);
+  }, [currentMessage]);
+
   return (
     <>
       {!announced && (
@@ -137,6 +149,8 @@ export default function WaifuAlerts() {
       )}
       {currentMessage && (
         <div
+          id={currentMessage.waifu.shikiId}
+          key={currentMessage.waifu.shikiId}
           ref={divHard}
           className={
             styles.baza + " " + animate.bounceIn + " " + animate.animated

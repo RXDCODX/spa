@@ -107,15 +107,19 @@
   line-height: 1.5em;
   display: inline-flex;
 
-  span {
+  div.emotes {
     /* remove webkit p margins */
     font-family: "Ubuntu-Italic", "Lucida Sans", helvetica, sans;
     font-size: 2.7vh;
     line-height: normal;
-    width: auto;
+    width: 250px;
+    height: 200px;
     margin-left: 1vh;
     -webkit-margin-before: 0em;
     -webkit-margin-after: 0em;
+    text-align: center;
+    align-items: center;
+    display: flex;
   }
 
   p {

@@ -1,19 +1,15 @@
 import { useCallback, useReducer, useRef, useState } from "react";
+import { Textfit } from "react-textfit";
 
 import { SignalRContext } from "../../app";
 import {
   BadgeEmoteSet,
   ChatMessage,
-  GenericEmote,
   GetGlobalChatBadgesResponse,
   Image,
 } from "../../shared/api/generated/baza";
 import animate from "../../shared/styles/animate.module.scss";
-import {
-  getRandomColor,
-  replaceBadges,
-  replaceEmotes,
-} from "../../shared/Utils";
+import { getRandomColor, replaceBadges } from "../../shared/Utils";
 import styles from "./Message.module.scss";
 
 enum StateStatus {
@@ -51,23 +47,31 @@ function reducer(
 
     case StateStatus.remove:
       if (state.messages.length > 0) {
-        const newMessage = state.messages
-          .filter(
-            (message) => message.message.id !== action.messageProps.message.id
-          )
-          .shift();
+        const newArray = state.messages.filter(
+          (message) => message.message.id !== action.messageProps.message.id
+        );
+
+        if (newArray.length > 0) {
+          const newMessage = newArray[0];
+
+          return {
+            messages: newArray,
+            currentMessage: newMessage,
+            isMessageShowing: true,
+          };
+        }
 
         return {
-          ...state,
           messages: state.messages,
-          currentMessage: newMessage,
+          currentMessage: undefined,
+          isMessageShowing: false,
         };
       }
 
       return {
-        ...state,
         currentMessage: undefined,
         isMessageShowing: false,
+        messages: [],
       };
   }
 }
@@ -78,20 +82,18 @@ export default function Message() {
     isMessageShowing: false,
   });
   const [badges, setBadges] = useState<BadgeEmoteSet[]>([]);
-  const [emotes, setEmotes] = useState<GenericEmote[]>([]);
   const divHard = useRef<HTMLDivElement>(null);
 
   SignalRContext.useSignalREffect(
     "init",
-    (badges: GetGlobalChatBadgesResponse, emotes?: GenericEmote[]) => {
+    (
+      badges: GetGlobalChatBadgesResponse
+      /*, emotes?: GenericEmote[] */
+    ) => {
       if (badges.emoteSet) {
         setBadges(badges.emoteSet);
       } else {
         throw new Error("Sosal?", { cause: "sosal" });
-      }
-
-      if (emotes) {
-        setEmotes(emotes);
       }
     },
     []
@@ -148,6 +150,8 @@ export default function Message() {
     <>
       {currentMessage && (
         <div
+          key={currentMessage.message.id}
+          id={currentMessage.message.id}
           className={
             styles.container + " " + animate.fadeIn + " " + animate.animated
           }
@@ -165,7 +169,6 @@ export default function Message() {
                     divHard.current!.onanimationend = () => {
                       handleRemoveEvent(currentMessage);
                     };
-
                     divHard.current!.className =
                       styles.container +
                       " " +
@@ -190,7 +193,6 @@ export default function Message() {
                     divHard.current!.onanimationend = () => {
                       handleRemoveEvent(currentMessage);
                     };
-
                     divHard.current!.className =
                       styles.container +
                       " " +
@@ -222,9 +224,16 @@ export default function Message() {
                   {currentMessage.message.displayName}:
                 </p>
               </div>
-              <span className={styles.emotes}>
-                {replaceEmotes(emotes, currentMessage.message.message)}
-              </span>
+              {/* <span className={styles.emotes}> */}
+              <Textfit
+                min={1}
+                max={1500}
+                mode="multi"
+                className={styles.emotes}
+              >
+                {currentMessage.message.message}
+              </Textfit>
+              {/* </span> */}
             </div>
           </div>
         </div>
