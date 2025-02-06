@@ -1,8 +1,9 @@
+import { JSX } from "react";
 import { Container, Row } from "react-bootstrap";
 import { Textfit } from "react-textfit";
 
+import { replaceEmotes } from "../../../components";
 import { MediaDto } from "../../api/generated/baza";
-import { replaceEmotes } from "..";
 import styles from "./BigTextStyles.module.scss";
 
 interface Props {
@@ -16,7 +17,6 @@ export function BigTextBlockForAudio({ mediaInfo }: Props) {
     return null;
   }
 
-  text = replaceEmotes(mediaInfo.mediaInfo.emotes, text);
   const splits = text?.split("=");
 
   const length = splits?.length;
@@ -28,11 +28,18 @@ export function BigTextBlockForAudio({ mediaInfo }: Props) {
     return null;
   }
 
+  const emotesSplits: Array<string | JSX.Element | JSX.Element[]> = [];
   for (let i = 0; i < splits.length; i++) {
     splits[i] = splits[i].trim();
+    if (splits[i]) {
+      const result = replaceEmotes(splits[i]);
+      if (result) {
+        emotesSplits[i] = result;
+      }
+    }
   }
 
-  const is2Exists = splits[1] != undefined;
+  const is2Exists = splits[1] != undefined && emotesSplits[1] != undefined;
 
   return (
     <Container className={styles.grid}>
@@ -48,10 +55,11 @@ export function BigTextBlockForAudio({ mediaInfo }: Props) {
             display: "flex",
             justifyContent: "center",
             alignContent: "center",
-            flexWrap: "wrap",
+            flexWrap: "nowrap",
+            alignItems: "stretch",
           }}
         >
-          {splits[0]}
+          {emotesSplits[0]}
         </Textfit>
       </Row>
       <Row className={styles.grid_cell}></Row>
@@ -73,10 +81,11 @@ export function BigTextBlockForAudio({ mediaInfo }: Props) {
             display: "flex",
             justifyContent: "center",
             alignContent: "center",
-            flexWrap: "wrap",
+            flexWrap: "nowrap",
+            alignItems: "stretch",
           }}
         >
-          {is2Exists ? splits[1] : ""}
+          {is2Exists ? emotesSplits[1] : ""}
         </Textfit>
       </Row>
     </Container>

@@ -1,14 +1,15 @@
-import { useCallback, useReducer, useRef, useState } from "react";
+import { useCallback, useReducer, useRef } from "react";
 import { Textfit } from "react-textfit";
+import { useShallow } from "zustand/react/shallow";
 
 import { SignalRContext } from "../../app";
 import {
-  BadgeEmoteSet,
   ChatMessage,
   GetGlobalChatBadgesResponse,
   Image,
 } from "../../shared/api/generated/baza";
 import animate from "../../shared/styles/animate.module.scss";
+import useTwitchStore from "../../shared/twitchStore/twitchStore";
 import { getRandomColor, replaceBadges } from "../../shared/Utils";
 import styles from "./Message.module.scss";
 
@@ -81,7 +82,8 @@ export default function Message() {
     messages: [],
     isMessageShowing: false,
   });
-  const [badges, setBadges] = useState<BadgeEmoteSet[]>([]);
+  const badges = useTwitchStore(useShallow((state) => state.badges));
+  const setBadges = useTwitchStore((state) => state.setBadges);
   const divHard = useRef<HTMLDivElement>(null);
 
   SignalRContext.useSignalREffect(

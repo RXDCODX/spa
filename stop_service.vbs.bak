@@ -1,4 +1,0 @@
-Set WshShell = CreateObject("WScript.Shell")
-processName = "cmd.exe"
-WshShell.Run "taskkill /F /IM " & processName, 1, true
-Set WshShell = Nothing

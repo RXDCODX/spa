@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 interface Props {
   keyWordedString: string;
   keySymbol: string;
@@ -26,6 +28,10 @@ export function KeyWordedText({
     : new RegExp(`(${keySymbol}\\S+)`, "g");
 
   const parts = keyWordedString.split(regex);
+
+  useEffect(() => {
+    console.log(parts);
+  }, [parts]);
 
   return (
     <div>

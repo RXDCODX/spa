@@ -3,7 +3,7 @@ import { Textfit } from "react-textfit";
 
 import { KeyWordText } from "../../../shared/components/KeyWordText";
 import { getRandomRotation } from "../../../shared/Utils";
-import { getCoordinates, MediaDto, replaceEmotes } from "../..";
+import { getCoordinates, MediaDto } from "../..";
 import styles from "./Media.module.scss";
 
 interface Props {
@@ -21,15 +21,8 @@ interface Props {
  * @returns {ReactElement} The rendered video component.
  */
 export function Video({ MediaInfo, callback }: Props) {
-  const {
-    emotes,
-    fileInfo,
-    id,
-    isWithGenericEmotes,
-    positionInfo,
-    textInfo,
-    metaInfo,
-  } = MediaInfo.mediaInfo;
+  const { fileInfo, id, positionInfo, textInfo, metaInfo } =
+    MediaInfo.mediaInfo;
 
   const player = useRef<HTMLVideoElement>(null);
 
@@ -42,50 +35,59 @@ export function Video({ MediaInfo, callback }: Props) {
       : {
           width: positionInfo.width + "px",
           height: positionInfo.height + "px",
+          maxHeight: "max-content",
         }
   );
 
   return (
     <div id={id} className={styles.media} style={baseStyles}>
-      <div>
-        <video
-          ref={player}
-          src={fileInfo.localFilePath}
-          controls={false}
-          autoPlay
-          style={baseStyles}
-          onLoadedMetadata={(event) => {
-            if (player.current) {
-              const newCords = getCoordinates(
-                player.current,
-                MediaInfo.mediaInfo
-              );
-              const bazestyles = { ...baseStyles };
-              setBaseStyles({
-                ...bazestyles,
-                ...newCords,
-                ...getRandomRotation(MediaInfo.mediaInfo),
-              });
+      <video
+        ref={player}
+        src={fileInfo.localFilePath}
+        controls={false}
+        autoPlay
+        style={{
+          maxWidth: baseStyles.maxWidth,
+          maxHeight: baseStyles.maxHeight,
+          width: baseStyles.width,
+          height: baseStyles.height,
+        }}
+        onLoadedMetadata={(event) => {
+          if (player.current) {
+            const newCords = getCoordinates(
+              player.current,
+              MediaInfo.mediaInfo
+            );
+
+            if (positionInfo.isUseOriginalWidthAndHeight) {
+              baseStyles.width = event.currentTarget.videoWidth + "px";
+              baseStyles.height = event.currentTarget.videoHeight + "px";
             }
 
-            if (event.currentTarget.duration < metaInfo.duration) {
-              if (metaInfo.isLooped) {
-                event.currentTarget.loop = true;
-                setTimeout(() => {
-                  player.current?.pause();
-                  callback();
-                }, metaInfo.duration * 1000);
-              } else {
-                event.currentTarget.onended = () => callback();
-              }
+            setBaseStyles({
+              ...{ ...baseStyles },
+              ...{ ...newCords },
+              ...{ ...getRandomRotation(MediaInfo.mediaInfo) },
+            });
+          }
+
+          if (event.currentTarget.duration < metaInfo.duration) {
+            if (metaInfo.isLooped) {
+              event.currentTarget.loop = true;
+              setTimeout(() => {
+                player.current?.pause();
+                callback();
+              }, metaInfo.duration * 1000);
             } else {
               event.currentTarget.onended = () => callback();
             }
+          } else {
+            event.currentTarget.onended = () => callback();
+          }
 
-            event.currentTarget.play();
-          }}
-        />
-      </div>
+          event.currentTarget.play();
+        }}
+      />
       <Textfit
         forceSingleModeWidth
         mode="single"
@@ -97,11 +99,7 @@ export function Video({ MediaInfo, callback }: Props) {
           classNameForKeyWordedSpan={styles.key_word}
           keySymbol="#"
           isQuouted
-          keyWordedString={
-            (isWithGenericEmotes
-              ? replaceEmotes(emotes, textInfo.text)
-              : textInfo.text) || ""
-          }
+          keyWordedString={textInfo.text ?? ""}
         />
       </Textfit>
     </div>

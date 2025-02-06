@@ -1,43 +1,22 @@
 import parse from "html-react-parser";
 
-import { GenericEmote, MediaInfo } from "../../components";
+import { MediaInfo } from "../../components";
 import { BadgeEmoteSet, ChatMessage } from "../api/generated/baza";
+import useTwitchStore from "../twitchStore/twitchStore";
 
 export { BigTextBlockForVoice } from "./BigTexts/BigTextBlockForVoice";
 export { BigTextBlockForAudio } from "./BigTexts/BigTextBlockForAudio";
 export { FullText } from "./FullText/FullText";
 
-export function replaceEmotes(
-  collection?: GenericEmote[] | null,
-  text?: string | null
-) {
+export function replaceEmotes(text?: string) {
+  const parser = useTwitchStore((state) => state.parser);
+  const fetcher = useTwitchStore((state) => state.fetcher);
+
   if (text) {
-    if (collection) {
-      collection.forEach(function (elem) {
-        try {
-          elem.name = elem.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-          //// Обновляем регулярное выражение
-          //const regex = new RegExp(`(?<!<)(?:(^|\\s))${elem.name}(?:(\\s+|$))(?!<)|(^|\\s)${elem.name}(?!<)`, "g");
-          // Обновляем регулярное выражение
-          const regex = new RegExp(
-            `(?<!<[^>]*)(?<=^|\\s)${elem.name}(?=\\s|$)(?![^<]*>)`,
-            "g"
-          );
-          if (elem.isTwitch) {
-            text = text?.replace(
-              regex,
-              `<img class="emote" src="${elem.url}" type="image">`
-            );
-          } else {
-            text = text?.replaceAll(
-              regex,
-              `<img class="emote" src="${elem.url}" type="image">`
-            );
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      });
+    if (parser) {
+      console.log(fetcher?.emotes);
+      text = parser.parse(text, 3);
+      // text = text.replaceAll(new RegExp("https", "g"), "http");
     }
   }
 
@@ -94,8 +73,8 @@ export function getCoordinates(
     returnObj.top = `${randomY >= 1 ? randomY : 0}px`;
   } else {
     if (
-      info?.positionInfo.IsHorizontalCenter &&
-      info?.positionInfo.IsVerticallCenter
+      info?.positionInfo.isHorizontalCenter &&
+      info?.positionInfo.isVerticallCenter
     ) {
       returnObj = {
         ...returnObj,
@@ -106,7 +85,7 @@ export function getCoordinates(
         msTransform: "translate(-50%, -50%)",
         transform: "translate(-50%, -50%)",
       };
-    } else if (info?.positionInfo.IsHorizontalCenter) {
+    } else if (info?.positionInfo.isHorizontalCenter) {
       returnObj = {
         ...returnObj,
         margin: 0,
@@ -116,7 +95,7 @@ export function getCoordinates(
         transform: "translateX(-50%)",
         top: info.positionInfo.yCoordinate + "px",
       };
-    } else if (info?.positionInfo.IsVerticallCenter) {
+    } else if (info?.positionInfo.isVerticallCenter) {
       returnObj = {
         ...returnObj,
         margin: 0,

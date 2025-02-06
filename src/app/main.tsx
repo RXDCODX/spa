@@ -19,7 +19,19 @@ createRoot(document.getElementById("root")!).render(
         url={import.meta.env.VITE_BASE_PATH + "drum"}
         logMessageContent
       >
-        <App />
+        <SignalRContext.Provider
+          automaticReconnect={true}
+          onError={(error) =>
+            new Promise((resolve) => resolve(console.log(error)))
+          }
+          onClosed={(event) => console.log(event)}
+          logger={console}
+          withCredentials={false}
+          url={import.meta.env.VITE_BASE_PATH + "chathub"}
+          logMessageContent
+        >
+          <App />
+        </SignalRContext.Provider>
       </SignalRContext.Provider>
     </StrictMode>
   </>

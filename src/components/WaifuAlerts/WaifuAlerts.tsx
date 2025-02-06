@@ -95,6 +95,7 @@ export default function WaifuAlerts() {
     "addnewwaifu",
     (message, displayName: string) => {
       const parsedMessage: WaifuAlertProps = { waifu: message, displayName };
+      parsedMessage.waifu.isAdded = true;
       handleAddEvent(parsedMessage);
     },
     []
@@ -104,6 +105,7 @@ export default function WaifuAlerts() {
     "Mergewaifu",
     (message, displayName: string) => {
       const parsedMessage: WaifuAlertProps = { waifu: message, displayName };
+      parsedMessage.waifu.merged = true;
       handleAddEvent(parsedMessage);
     },
     []
