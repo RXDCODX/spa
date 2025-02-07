@@ -110,10 +110,6 @@ export interface GenericEmote {
   isTwitch: boolean;
 }
 
-export interface GetGlobalChatBadgesResponse {
-  emoteSet?: BadgeEmoteSet[];
-}
-
 export interface Image {
   signature?: string;
   extension?: string;

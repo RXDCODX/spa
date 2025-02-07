@@ -3553,6 +3553,11 @@ react-property@2.0.2:
   resolved "https://registry.yarnpkg.com/react-property/-/react-property-2.0.2.tgz#d5ac9e244cef564880a610bc8d868bd6f60fdda6"
   integrity sha512-+PbtI3VuDV0l6CleQMsx2gtK0JZbZKbpdu5ynr+lbsuvtmgbNcS3VM0tuY2QjFNOcWxvXeHjDpy42RO+4U2rug==
 
+react-roulette-pro@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/react-roulette-pro/-/react-roulette-pro-3.2.2.tgz#baa84581570cbea793611538a6b0ffe60343136a"
+  integrity sha512-d1TB1H1hU83awHF5x591gfvOkt077h9O8A+IH2+57RwFEYPwqaF/cZtahOlW4TEN2seGRQ8W7bRzrmNn26t0mw==
+
 react-router-dom@^7.0.1:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-7.1.1.tgz#9e76fb63a762ba5da13032f5fd9e4a24946396b6"

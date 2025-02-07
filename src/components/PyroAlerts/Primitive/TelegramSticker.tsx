@@ -26,8 +26,6 @@ export default function TelegramSticker({
   const {
     id: Id,
     metaInfo,
-    emotes,
-    isWithGenericEmotes,
     positionInfo,
     textInfo,
     fileInfo,
@@ -54,11 +52,7 @@ export default function TelegramSticker({
         style={{ width: "320px", height: "320px" }}
         background="transparent"
       />
-      <div className="sticker-text">
-        {isWithGenericEmotes
-          ? replaceEmotes(emotes, textInfo.text)
-          : textInfo.text}
-      </div>
+      <div className="sticker-text">{replaceEmotes(textInfo.text)}</div>
     </div>
   );
 }

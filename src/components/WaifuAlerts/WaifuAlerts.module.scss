@@ -6,6 +6,7 @@ body {
 
 div#root {
   min-height: 100%;
+  flex-direction: column;
 }
 
 .baza {
@@ -15,6 +16,7 @@ div#root {
   justify-content: center;
   flex: 1;
   height: 100%;
+  align-self: center;
 }
 
 .alert-box {
@@ -24,4 +26,15 @@ div#root {
   justify-content: center;
   font-size: 48px;
   text-align: center;
+}
+
+.roulette-name-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  text-align: center;
+  text-transform: uppercase;
+  color: white;
 }

@@ -1,4 +1,5 @@
 import "./App.module.scss";
+import "./global.scss";
 
 import Routes from "../routes/Routes";
 import useTwitchStore from "../shared/twitchStore/twitchStore";

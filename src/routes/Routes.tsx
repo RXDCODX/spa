@@ -12,11 +12,7 @@ const PrivateRoutes = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/pyroalerts" element={<PyroAlerts />} />
-        <Route
-          path="/waifu"
-          Component={WaifuAlerts}
-          element={<WaifuAlerts />}
-        />
+        <Route path="/waifu" element={<WaifuAlerts />} />
         <Route path="/fumofriday" element={<FumoFriday />} />
         <Route path="/tiktok" element={<TikTok />} />
         <Route path="/highlite" element={<HighliteMessage />} />

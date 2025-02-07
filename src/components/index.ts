@@ -16,7 +16,6 @@ export {
 } from "../shared/api/generated/baza";
 
 export type {
-  BadgeEmoteSet,
   BadgeVersion,
   ChatMessage,
   ChatReply,
@@ -25,7 +24,6 @@ export type {
   Emote,
   EmoteSet,
   GenericEmote,
-  GetGlobalChatBadgesResponse,
   Image,
   MediaDto,
   MediaFileInfo,

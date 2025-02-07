@@ -3,11 +3,7 @@ import { Textfit } from "react-textfit";
 import { useShallow } from "zustand/react/shallow";
 
 import { SignalRContext } from "../../app";
-import {
-  ChatMessage,
-  GetGlobalChatBadgesResponse,
-  Image,
-} from "../../shared/api/generated/baza";
+import { ChatMessage, Image } from "../../shared/api/generated/baza";
 import animate from "../../shared/styles/animate.module.scss";
 import useTwitchStore from "../../shared/twitchStore/twitchStore";
 import { getRandomColor, replaceBadges } from "../../shared/Utils";
@@ -83,23 +79,7 @@ export default function Message() {
     isMessageShowing: false,
   });
   const badges = useTwitchStore(useShallow((state) => state.badges));
-  const setBadges = useTwitchStore((state) => state.setBadges);
   const divHard = useRef<HTMLDivElement>(null);
-
-  SignalRContext.useSignalREffect(
-    "init",
-    (
-      badges: GetGlobalChatBadgesResponse
-      /*, emotes?: GenericEmote[] */
-    ) => {
-      if (badges.emoteSet) {
-        setBadges(badges.emoteSet);
-      } else {
-        throw new Error("Sosal?", { cause: "sosal" });
-      }
-    },
-    []
-  );
 
   SignalRContext.useSignalREffect(
     "highlite",
