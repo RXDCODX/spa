@@ -39,13 +39,13 @@ export default function WaifuRoulette({
     alignItems: "center",
     justifyItems: "center",
     alignSelf: "center",
-    animationDuration: "6s",
+    animationDuration: "2.2s",
   });
 
   return (
     <div
       ref={rouletteDiv}
-      className={" " + animate.animated + " " + animate.fadeInDownBig}
+      className={" " + animate.animated + " " + animate.fadeIn}
       onAnimationEnd={() => {
         setRouletteStart(true);
         setVisible(true);
@@ -54,6 +54,7 @@ export default function WaifuRoulette({
     >
       <div
         ref={heightDiv}
+        className={styles["smooth-box"]}
         style={{
           width: "100%",
           margin: "0 auto",
@@ -84,7 +85,7 @@ export default function WaifuRoulette({
           spinningTime={20}
           type="horizontal"
           classes={{}}
-          options={{ withoutAnimation: true, stopInCenter: true }}
+          options={{ withoutAnimation: true }}
           defaultDesignOptions={{
             prizesWithText: true,
             hideCenterDelimiter: true,
@@ -98,7 +99,7 @@ export default function WaifuRoulette({
             setBaseStyle((prev) => {
               return {
                 ...prev,
-                animationDuration: "2.2s",
+                animationDuration: "1.5s",
               };
             });
             div.className = " " + animate.animated + " " + animate.fadeOut;
