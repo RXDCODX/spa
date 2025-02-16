@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Textfit } from "react-textfit";
 
 import { KeyWordText } from "../../../shared/components/KeyWordText";
@@ -39,6 +39,13 @@ export function Video({ MediaInfo, callback }: Props) {
         }
   );
 
+  const setStyles = useCallback(
+    (styles: React.CSSProperties) => {
+      setBaseStyles(styles);
+    },
+    [setBaseStyles]
+  );
+
   return (
     <div id={id} className={styles.media} style={baseStyles}>
       <video
@@ -60,15 +67,19 @@ export function Video({ MediaInfo, callback }: Props) {
             );
 
             if (positionInfo.isUseOriginalWidthAndHeight) {
-              baseStyles.width = event.currentTarget.videoWidth + "px";
-              baseStyles.height = event.currentTarget.videoHeight + "px";
+              setStyles({
+                width: event.currentTarget.videoWidth + "px",
+                height: event.currentTarget.videoHeight + "px",
+              });
             }
 
-            setBaseStyles({
-              ...{ ...baseStyles },
-              ...{ ...newCords },
-              ...{ ...getRandomRotation(MediaInfo.mediaInfo) },
+            setStyles({
+              ...baseStyles,
+              ...newCords,
+              ...getRandomRotation(MediaInfo.mediaInfo),
             });
+
+            console.log(baseStyles);
           }
 
           if (event.currentTarget.duration < metaInfo.duration) {
